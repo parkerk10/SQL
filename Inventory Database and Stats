@@ -1,0 +1,26 @@
+-- Create an inventory database describing products with section of the store, product name, price, how many in inventory, and item SKU
+
+CREATE TABLE Inventory (category TEXT, product TEXT, price INTEGER, quantity INTEGER, sku INTEGER);
+
+INSERT INTO Inventory VALUES ("Bath", "Ectoplasm", 8.95, 8, 8025);
+INSERT INTO Inventory VALUES ("Bath", "UFO", 5.95, 12, 8023);
+INSERT INTO Inventory VALUES ("Bath", "Lord of Misrule", 7.95, 10, 8026);
+INSERT INTO Inventory VALUES ("Bath", "Bat Art", 5.95, 20, 8027);
+INSERT INTO Inventory VALUES ("Bath", "Punkin Pumpkin", 6.95, 15, 8024);
+INSERT INTO Inventory VALUES ("Shower", "Lord of Misrule 100ml", 9.95, 10, 8125);
+INSERT INTO Inventory VALUES ("Shower", "Lord of Misrule 250ml", 16.95, 28, 8126);
+INSERT INTO Inventory VALUES ("Shower", "Lord of Misrule 500ml", 32.95, 6, 8127);
+INSERT INTO Inventory VALUES ("Shower", "Monster Octopus", 9.95, 23, 8030);
+INSERT INTO Inventory VALUES ("Shower", "Boo", 17.95, 10, 8031);
+
+-- Display all bath items organized by price
+SELECT * FROM Inventory WHERE "Bath" ORDER BY price;
+
+-- What is the total amount of inventory for bath items
+SELECT SUM(quantity) FROM Inventory WHERE category = "Bath";
+
+-- What is the average price of the shower items
+SELECT AVG(price) FROM Inventory WHERE category = "Shower";
+
+--What three items do we have the most of in inventory
+SELECT category, product, quantity FROM Inventory ORDER BY quantity desc limit 3;
