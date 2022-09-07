@@ -1,0 +1,58 @@
+/* Create table about authors */
+CREATE TABLE Authors (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Age INTEGER, Favorite_Color TEXT);
+INSERT INTO authors (name, age, favorite_color) VALUES ("David Levithan", 24, "Red");
+INSERT INTO authors (name, age, favorite_color) VALUES ("John Green", 36, "Green");
+INSERT INTO authors (name, age, favorite_color) VALUES ("Becky Albertalli", 35, "Blue");
+INSERT INTO authors (name, age, favorite_color) VALUES ("Neil Gaiman", 52, "Black");
+INSERT INTO authors (name, age, favorite_color) VALUES ("Adam Silvera", 86, "Blue");
+
+/* Create table of books written by David Levithan */
+CREATE TABLE David_Levithan (Author_ID INTEGER, Book_Title TEXT, Publish_Year INTEGER);
+INSERT INTO David_Levithan (author_id, book_title, publish_year) VALUES (1, "Boy Meets Boy", 1999);
+INSERT INTO David_Levithan (author_id, book_title, publish_year) VALUES (1, "Every You, Every Me", 2000);
+INSERT INTO David_Levithan (author_id, book_title, publish_year) VALUES (1, "Another Day", 2016);
+INSERT INTO David_Levithan (author_id, book_title, publish_year) VALUES (1, "Wide Awake", 2006);
+INSERT INTO David_Levithan (author_id, book_title, publish_year) VALUES (1, "Lover's Dictionary", 2013);
+
+/* Create table of books written by John Green */
+CREATE TABLE John_Green (Author_ID INTEGER, Book_Title TEXT, Publish_Year INTEGER);
+INSERT INTO John_Green VALUES (2, "The Fault In Our Stars", 2013);
+INSERT INTO John_Green VALUES (2, "Looking For Alaska", 2007);
+INSERT INTO John_Green VALUES (2, "Paper Towns", 2012);
+INSERT INTO John_Green VALUES (2, "An Abundance of Katherines", 2009);
+INSERT INTO John_Green VALUES (2, "Will Grayson, Will Grayson", 2011);
+
+/*Create table of books written by Becky Albertalli*/
+CREATE TABLE Becky_Albertalli (Author_ID INTEGER, Book_Title TEXT, Publish_Year INTEGER);
+INSERT INTO Becky_Albertalli VALUES (3, "Kate In Waiting", 2021);
+INSERT INTO Becky_Albertalli VALUES (3, "Love, Simon", 2015);
+INSERT INTO Becky_Albertalli VALUES (3, "Yes No Maybe So", 2020);
+INSERT INTO Becky_Albertalli VALUES (3, "The Upside of Unrequited", 2017);
+INSERT INTO Becky_Albertalli VALUES (3, "Love Creekwood", 2020);
+
+/*Create table of books written by Neil Gaiman*/
+CREATE TABLE Neil_Gaiman (Author_ID INTEGER, Book_Title TEXT, Publish_Year INTEGER);
+INSERT INTO Neil_Gaiman VALUES (4, "The Graveyard Book", 2008);
+INSERT INTO Neil_Gaiman VALUES (4, "American Gods", 2011);
+INSERT INTO Neil_Gaiman VALUES (4, "Coraline", 2003);
+INSERT INTO Neil_Gaiman VALUES (4, "Stardust", 2012);
+INSERT INTO Neil_Gaiman VALUES (4, "The Ocean at the End of the Lane", 2013);
+
+/*Create table of books written by Adam Silvera*/
+CREATE TABLE Adam_Silvera (Author_ID INTEGER, Book_Title TEXT, Publish_Year INTEGER);
+INSERT INTO Adam_Silvera VALUES (5, "The First to Die at the End", 2022);
+INSERT INTO Adam_Silvera VALUES (5, "More Happy Than Not", 2015);
+INSERT INTO Adam_Silvera VALUES (5, "Infinity Son", 2020);
+INSERT INTO Adam_Silvera VALUES (5, "They Both Die at the End", 2017);
+INSERT INTO Adam_Silvera VALUES (5, "Infinity Reaper", 2021);
+
+/*Show all of David Levithan's book in order of release*/
+SELECT david_levithan.publish_year, david_levithan.book_title, authors.name FROM david_levithan
+JOIN authors
+ON david_levithan.author_id = authors.id
+ORDER BY david_levithan.publish_year;
+
+/*Show John Green's most recent book released*/
+SELECT MAX(john_green.publish_year) AS Publish_Year, john_green.book_title, authors.name FROM john_green
+JOIN authors
+ON john_green.author_id = authors.id
