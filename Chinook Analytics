@@ -1,0 +1,94 @@
+/* Imported digital media store database into SQLlite Studio */
+/* Analyze different information from the database */
+/*Show only customers not in the US*/
+SELECT firstname,lastname,country FROM chinook.customers
+WHERE country != "USA"
+ORDER BY country;
+
+/*Show only customers in Brazil*/
+SELECT firstname,lastname,country FROM chinook.customers
+WHERE country = "Brazil"
+ORDER BY firstname;
+
+/*Find the invoices of customers who are in Brazil*/
+SELECT c.firstname,c.lastname,i.invoiceID,i.invoicedate,i.billingcountry FROM chinook.customers c
+LEFT JOIN chinook.invoices i
+ON c.customerid = i.customerid;
+
+/*Show employees that are sales agents*/
+SELECT lastname,firstname,title FROM chinook.employees
+WHERE title = "Sales Support Agent"
+ORDER BY lastname;
+
+/*Find a distinct list of billing countries from the invoices table*/
+SELECT DISTINCT i.billingcountry,c.firstname,c.lastname FROM chinook.customers c
+LEFT JOIN chinook.invoices i
+ON c.customerid = i.customerid
+ORDER BY i.billingcountry;
+
+/*Show all invoices associated with each sales agent*/
+SELECT emp.lastname,emp.firstname,inv.invoiceid FROM chinook.employees emp
+JOIN chinook.customers cust
+ON cust.supportrepid = emp.employeeid
+JOIN chinook.invoices inv
+ON inv.customerid = cust.customerid;
+
+/*Show the invoice total, customer name, country, and sales agent for all customer invoices*/
+SELECT c.firstname,c.lastname,c.country,i.total,e.lastname,e.firstname FROM chinook.customers c
+JOIN chinook.invoices i
+ON i.customerid = c.customerid
+JOIN chinook.employees e
+ON e.employeeid = c.supportrepid
+ORDER BY e.lastname;
+
+/*How many invoices were there in 2009?*/
+SELECT COUNT(invoicedate) FROM chinook.invoices
+WHERE invoicedate LIKE "%2009%";
+
+/*What are the total sales from 2009*/
+SELECT SUM(total) FROM chinook.invoices
+WHERE invoicedate LIKE "%2009%";
+
+/*Display the track name next to each invoice line item*/
+SELECT i.invoicelineid,t.name FROM chinook.invoice_items i
+JOIN chinook.tracks t
+ON t.trackid = i.trackid
+ORDER BY t.name;
+
+/*Display the track name and artist name next to each invoice item*/
+SELECT a.name as artist, t.name as song, i.invoicelineid FROM chinook.artists a
+JOIN chinook.albums al
+ON al.artistid = a.artistid
+JOIN chinook.tracks t
+ON t.albumid = al.albumid
+JOIN chinook.invoice_items i
+ON i.trackid = t.trackid
+ORDER BY a.name;
+
+/*Display all tracks with their album name, media type, and genre*/
+SELECT t.name as song,a.title as album,m.name as media_type,g.name as genre FROM chinook.tracks t
+JOIN chinook.albums a
+ON a.albumid = t.albumid
+JOIN chinook.media_types m
+ON m.mediatypeid = t.mediatypeid
+JOIN chinook.genres g
+ON g.genreid = t.genreid
+ORDER BY album;
+
+/*Show total sales for each sales agent*/
+SELECT e.lastname, e.firstname, SUM(i.total) as revenue FROM chinook.employees e
+JOIN chinook.customers c
+ON c.supportrepid = e.employeeid
+JOIN chinook.invoices i
+ON i.customerid = c.customerid
+GROUP BY e.lastname;
+
+/*Which sales agent had the most sales in 2009?*/
+SELECT e.lastname,e.firstname, SUM(i.total) as revenue FROM chinook.employees e
+JOIN chinook.customers c 
+ON c.supportrepid = e.employeeid
+JOIN chinook.invoices i
+ON i.customerid = c.customerid
+WHERE i.invoicedate LIKE '%2009%' 
+GROUP BY e.lastname
+ORDER BY SUM(i.total)  DESC LIMIT 1;
